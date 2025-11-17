@@ -15,7 +15,7 @@ public class LoginTest {
             } else {
                 System.out.println("Тест не пройдено: заголовок не Swag Labs");
             }
-        } finally {
+        } finally {//
             driver.quit();
         }
     }
