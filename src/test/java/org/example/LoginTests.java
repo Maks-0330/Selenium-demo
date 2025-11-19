@@ -1,0 +1,61 @@
+package org.example;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
+public class LoginTests {
+    WebDriver driver;
+
+    @BeforeMethod
+    public void setUp(){
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.saucedemo.com/");
+    }
+    @AfterMethod
+    public void tearDown(){
+        driver.quit();
+    }
+    @Test
+    public void veriPageTitleAndLoginFields(){
+        String pageTitle = driver.getTitle();
+        Assert.assertTrue(pageTitle.contains("Swag Labs"),"Заголовок не мыстить назву 'Swag Labs'");
+
+        SoftAssert softAssert = new SoftAssert();
+
+        WebElement usernameField = driver.findElement(By.id("user-name"));
+        WebElement passwordField = driver.findElement(By.id("password"));
+
+        softAssert.assertTrue(usernameField.isDisplayed(),"Поле логіну відсутнє");
+        softAssert.assertTrue(passwordField.isDisplayed(),"Поле паролю відсутнє");
+        softAssert.assertAll();
+    }
+    @DataProvider(name = "LoginData")
+    public Object[][] loginDataProvider(){
+        return new Object[][]{
+                {"standard_user", "secret_sauce"},
+                {"locked_out_user", "secret_sauce"},
+                {"problem_user", "secret_sause"}
+        };
+
+    }
+    @Test(dataProvider = "LoginData")
+    public void testLoginWithDataProvider(String username, String password){
+        System.out.println(" Тест логін: " + username + " Пароль: " + password);
+
+        WebElement usernameField = driver.findElement(By.id("user-name"));
+        WebElement passwordField = driver.findElement(By.id("password"));
+
+         usernameField.sendKeys(username);
+         passwordField.sendKeys(password);
+    }
+}
+
