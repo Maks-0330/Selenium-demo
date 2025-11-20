@@ -10,52 +10,56 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import pages.LoginPage;
 
 public class LoginTests {
     WebDriver driver;
+    LoginPage loginPage;
 
     @BeforeMethod
-    public void setUp(){
+    public void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://www.saucedemo.com/");
+        loginPage = new LoginPage(driver);
     }
+
     @AfterMethod
-    public void tearDown(){
+    public void tearDown() {
         driver.quit();
     }
+
     @Test
-    public void veriPageTitleAndLoginFields(){
+    public void veriPageTitleAndLoginFields() {
         String pageTitle = driver.getTitle();
-        Assert.assertTrue(pageTitle.contains("Swag Labs"),"Заголовок не мыстить назву 'Swag Labs'");
+        Assert.assertTrue(pageTitle.contains("Swag Labs"), "Заголовок не містить назву 'Swag Labs'");
 
         SoftAssert softAssert = new SoftAssert();
 
         WebElement usernameField = driver.findElement(By.id("user-name"));
         WebElement passwordField = driver.findElement(By.id("password"));
 
-        softAssert.assertTrue(usernameField.isDisplayed(),"Поле логіну відсутнє");
-        softAssert.assertTrue(passwordField.isDisplayed(),"Поле паролю відсутнє");
+        softAssert.assertTrue(usernameField.isDisplayed(), "Поле логіну відсутнє");
+        softAssert.assertTrue(passwordField.isDisplayed(), "Поле паролю відсутнє");
         softAssert.assertAll();
     }
+
     @DataProvider(name = "LoginData")
-    public Object[][] loginDataProvider(){
+    public Object[][] loginDataProvider() {
         return new Object[][]{
                 {"standard_user", "secret_sauce"},
                 {"locked_out_user", "secret_sauce"},
-                {"problem_user", "secret_sause"}
+                {"problem_user", "secret_sauce"}
         };
 
     }
+
     @Test(dataProvider = "LoginData")
-    public void testLoginWithDataProvider(String username, String password){
+    public void testLoginWithDataProvider(String username, String password) {
         System.out.println(" Тест логін: " + username + " Пароль: " + password);
 
-        WebElement usernameField = driver.findElement(By.id("user-name"));
-        WebElement passwordField = driver.findElement(By.id("password"));
-
-         usernameField.sendKeys(username);
-         passwordField.sendKeys(password);
+        loginPage.enterUsername(username);
+        loginPage.enterPassword(password);
     }
 }
 
