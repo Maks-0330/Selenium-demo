@@ -1,5 +1,7 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LoginTest {
@@ -15,6 +17,9 @@ public class LoginTest {
             } else {
                 System.out.println("Тест не пройдено: заголовок не Swag Labs");
             }
+            //hw10 перевірка елементів
+            WebElement passwordInput = driver.findElement(By.cssSelector("input[data-test='password']"));
+            System.out.println("CSS Selector: Поле паролю знайдене");
         } finally {
             driver.quit();
         }
