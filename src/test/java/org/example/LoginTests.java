@@ -30,17 +30,15 @@ public class LoginTests {
     }
 
     @Test
-    public void veriPageTitleAndLoginFields() {
+    public void verifyPageTitleAndLoginFields() {
         String pageTitle = driver.getTitle();
         Assert.assertTrue(pageTitle.contains("Swag Labs"), "Заголовок не містить назву 'Swag Labs'");
 
         SoftAssert softAssert = new SoftAssert();
 
-        WebElement usernameField = driver.findElement(By.id("user-name"));
-        WebElement passwordField = driver.findElement(By.id("password"));
 
-        softAssert.assertTrue(usernameField.isDisplayed(), "Поле логіну відсутнє");
-        softAssert.assertTrue(passwordField.isDisplayed(), "Поле паролю відсутнє");
+        softAssert.assertTrue(loginPage.isUsernameFieldDisplayed(), "Поле логіну відсутнє");
+        softAssert.assertTrue(loginPage.isPasswordFieldDisplayed(), "Поле паролю відсутнє");
         softAssert.assertAll();
     }
 
